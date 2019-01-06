@@ -4,12 +4,12 @@
     <router-view></router-view>
     <p v-if="isConnected">We're connected to the server!</p>
     <input v-model="socketMessage" @blur="sendMessage">
-    <p>Messages from server:</p>
+    <!-- <p>Messages from server:</p>
     <ul>
       <li v-for="(message, key) in messages" :key="key">
         <p>{{message.message}}</p>
         </li>
-      </ul>
+      </ul> -->
   </div>
 </template>
 

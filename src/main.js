@@ -1,16 +1,14 @@
 import Vue from 'vue'
+import Vuetify from 'vuetify'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import Routes from './routes.js'
-// import VueSocketIO from 'vue-socket.io';
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: 'http://localhost:3000'
-// }))
+Vue.use(Vuetify)
 
 const router = new VueRouter({
   routes: Routes,
