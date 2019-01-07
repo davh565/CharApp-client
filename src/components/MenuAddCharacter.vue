@@ -3,9 +3,9 @@
     <h1>Add Character</h1>
     <router-link to="/characters"><h2>back</h2></router-link>
     <br>
-    <v-treeview :items="keyNames(characteristics)" open-on-click>
+    <v-treeview :items="keyNames" open-on-click>
       <template slot="label" slot-scope="{ item, open, leaf }">
-      <p>{{item.name}}: <input v-if="leaf" v-model="item.value" :placeholder="item.type"></p>
+      <p>{{item.name}}: <input v-if="leaf" v-on:blur="updateField(item)" v-model="item.value" :placeholder="item.type"></p>
     </template>
     </v-treeview>
 
@@ -13,16 +13,34 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+
 export default {
   name: 'MenuAddCharacter',
+
   props: {
     msg: String
   },
-  methods:{
-    //Clean this up later
-    keyNames: function(val,arr){
+  sockets: {
+    connect: function () {
+        console.log('socket connected')
+    },
+    customEmit: function (data) {
+        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+    }
+},
 
-      let x=  []
+  methods:{
+    updateField(val){
+      console.log(val)
+      this.socket.emit('chat message', val.name);
+    }
+  },
+  computed:{
+    //Clean this up later
+    keyNames: function(){
+      this.tree = []
+      let treeMake = function(val,arr){
       for (let key in val){
         let obj = {}
         obj.name = key
@@ -30,23 +48,19 @@ export default {
         obj.value = ''
         if(typeof val[key] === 'object'){
           obj.children=[]
-          this.keyNames(val[key],obj.children)
+          treeMake(val[key],obj.children)
         }
-        if(arr){
-          arr.push(obj)
-        }else{
-        x.push(obj)
-        }
-        // console.log(key,val[key])
-        // console.log(obj)
-
-      }
-      // console.log(x)
-     return x
+        arr.push(obj)
+      }}
+      new treeMake(this.characteristics,this.tree)
+      //  console.log('tree',this.tree)
+     return this.tree
     }
   },
 
   data: () => ({
+      tree: [],
+      socket: io('localhost:3000'),
       characteristics: {
   ac: {
     total: 'Number',
