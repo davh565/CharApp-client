@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <router-link to="/"><h1>CharApp</h1></router-link>
+    <router-link to="/"><h1>{{testData}}</h1></router-link>
     <router-view></router-view>
-    <p v-if="isConnected">We're connected to the server!</p>
-    <input v-model="socketMessage" @blur="sendMessage">
+    <input v-model="socketMessage" >
     <!-- <p>Messages from server:</p>
     <ul>
       <li v-for="(message, key) in messages" :key="key">
@@ -14,42 +13,45 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 
 export default {
   name: 'app',
   components: {
   },
+  computed: {
+    testData(){
+      return this.$store.state.testData
+    }
+  },
 
   data() {
     return {
-      isConnected: false,
       messages: [],
       socketMessage: '',
-      socket: io('localhost:3000')
     }
   },
-    sockets: {
-    connect: function () {
-        console.log('socket connected')
-    },
-    customEmit: function (data) {
-        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-    }
-},
+//     sockets: {
+//     connect: function () {
+//         console.log('socket connected')
+//     },
+//     customEmit: function (data) {
+//         console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+//     }
+// },
 methods: {
-        sendMessage(e) {
-            e.preventDefault();
+    //     sendMessage(e) {
+    //         e.preventDefault();
             
-            this.socket.emit('chat message', this.socketMessage);
-            this.socketMessage = ''
-        }
-    },
-    mounted() {
-        this.socket.on('chat message', (data) => {
-            this.messages = [...this.messages, data];
-            // you can also do this.messages.push(data)
-        });
+    //         this.socket.emit('chat message', this.socketMessage);
+    //         this.socketMessage = ''
+    //     }
+    // },
+    // mounted() {
+    //     this.socket.on('chat message', (data) => {
+    //         this.messages = [...this.messages, data];
+    //         // you can also do this.messages.push(data)
+    //     });
     }
 }
 </script>

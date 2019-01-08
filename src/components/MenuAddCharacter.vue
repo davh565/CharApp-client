@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>Add Character</h1>
+    <h1>{{testData}}</h1>
     <router-link to="/characters"><h2>back</h2></router-link>
     <br>
     <v-treeview :items="keyNames" open-on-click>
@@ -13,7 +14,6 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
 
 export default {
   name: 'MenuAddCharacter',
@@ -21,21 +21,8 @@ export default {
   props: {
     msg: String
   },
-  sockets: {
-    connect: function () {
-        console.log('socket connected')
-    },
-    customEmit: function (data) {
-        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-    }
-},
+  
 
-  methods:{
-    updateField(val){
-      console.log(val)
-      this.socket.emit('chat message', val.name);
-    }
-  },
   computed:{
     //Clean this up later
     keyNames: function(){
@@ -55,12 +42,14 @@ export default {
       new treeMake(this.characteristics,this.tree)
       //  console.log('tree',this.tree)
      return this.tree
+    },
+    testData(){
+      return this.$store.state.testData
     }
   },
 
   data: () => ({
       tree: [],
-      socket: io('localhost:3000'),
       characteristics: {
   ac: {
     total: 'Number',
