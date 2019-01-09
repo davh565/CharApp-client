@@ -1,11 +1,13 @@
 <template>
   <div class="hello">
     <h1>Characters</h1>
-    <router-link to="/characters/add"><h2>Add Character</h2></router-link>
-    <h2>Jimmy</h2>
-    <h2>Testy McTesterson</h2>
-    <h2>Theren Greenwood</h2>
-
+    <br>
+    <v-btn large to="/characters/add">New Character</v-btn><br><br>
+    <li v-for="character in characters" :key=character>
+      <v-btn to="{ path: '/characters/:character'}">
+        {{character}}
+      </v-btn>
+    </li><br>
   </div>
 </template>
 
@@ -14,6 +16,11 @@ export default {
   name: 'MenuCharacters',
   props: {
     msg: String
+  },
+  computed: {
+    characters: function(){
+      return this.$store.state.characters
+    }
   }
 }
 </script>

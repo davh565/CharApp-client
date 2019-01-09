@@ -1,9 +1,8 @@
 <template>
   <div class="hello">
-    <h2>Campaigns</h2>
-    <router-link to="/characters">
-      <h2>Characters</h2>
-    </router-link>
+    <v-btn disabled>Campaigns</v-btn><br>
+    <v-btn to="/characters">Characters</v-btn><br>
+    <v-btn disabled>Rulesets</v-btn><br>
   </div>
 </template>
 

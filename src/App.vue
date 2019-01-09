@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <router-link to="/"><h1>{{testData}}</h1></router-link>
+    <router-link to="/"><h1>CharApp</h1></router-link>
+    <br>
     <router-view></router-view>
     <input v-model="socketMessage" >
     <!-- <p>Messages from server:</p>

@@ -7,7 +7,10 @@ export const store = new Vuex.Store({
     state: {
         isConnected: false,
         message: null,
-        testData: 'hello'
+        testData: 'hello',
+        rulesets: ['Pathfinder','D&D 5E', "D&D 4E"],
+        campaigns: [],
+        characters: ['Theren Greenwood','Testy McTesterson', 'Smashy Smashface']
       },
       mutations: {
         SOCKET_CONNECT(state, status) {
