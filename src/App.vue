@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" data-app="true">
     <router-link to="/"><h1>CharApp</h1></router-link>
     <br>
     <router-view></router-view>

@@ -3,21 +3,35 @@
     <h1>Add Character</h1>
     <br>
     <v-container>
-      <v-form>
+      <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation>
+      
         <v-text-field
+        v-model="name"
+        :rules="nameRules"
+        required
         label="Name">
         </v-text-field>
+
         <v-combobox
+        :rules="rulesetRules"
+        v-model="ruleset"
+        required
         label="Ruleset"
         :items="rulesets"
         placeholder="Pathfinder">
         </v-combobox>
+
         <v-combobox
+        v-model="campaign"
         label="Campaign"
         :items="campaigns">
         </v-combobox>
         <v-btn to="/characters">Back</v-btn>
-        <v-btn>OK</v-btn>
+        <v-btn :disabled="!valid"
+       @click="validate">OK</v-btn>
       </v-form>
 
     </v-container>
@@ -42,24 +56,24 @@ export default {
 
   computed:{
     //Clean this up later
-    keyNames: function(){
-      this.tree = []
-      let treeMake = function(val,arr){
-      for (let key in val){
-        let obj = {}
-        obj.name = key
-        obj.type = val[key]
-        obj.value = ''
-        if(typeof val[key] === 'object'){
-          obj.children=[]
-          treeMake(val[key],obj.children)
-        }
-        arr.push(obj)
-      }}
-      new treeMake(this.characteristics,this.tree)
-      //  console.log('tree',this.tree)
-     return this.tree
-    },
+    // keyNames: function(){
+    //   this.tree = []
+    //   let treeMake = function(val,arr){
+    //   for (let key in val){
+    //     let obj = {}
+    //     obj.name = key
+    //     obj.type = val[key]
+    //     obj.value = ''
+    //     if(typeof val[key] === 'object'){
+    //       obj.children=[]
+    //       treeMake(val[key],obj.children)
+    //     }
+    //     arr.push(obj)
+    //   }}
+    //   new treeMake(this.characteristics,this.tree)
+    //   //  console.log('tree',this.tree)
+    //  return this.tree
+    // },
     rulesets: function(){
       return this.$store.state.rulesets
     },
@@ -69,10 +83,28 @@ export default {
   },
 
   data: () => ({
-      tree: []
-    })
+      tree: [],
+      valid: true,
+      name: '',
+      nameRules:  [v => !!v || 'Name is required'],
+      ruleset: '',
+      rulesetRules: [ v => !!v || 'Ruleset is required'],
+      campaign: '',
+    }),
 
-
+methods: {
+      validate () {
+        if (this.$refs.form.validate()) {
+          // this.snackbar = true
+        }
+      },
+      reset () {
+        this.$refs.form.reset()
+      },
+      resetValidation () {
+        this.$refs.form.resetValidation()
+      }
+  }
 }
 </script>
 
