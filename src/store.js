@@ -21,10 +21,7 @@ export const store = new Vuex.Store({
         },
       },
       actions: {
-        otherAction(context, type) {
-          return true;
-        },
-        socket_chatMessage({ commit, dispatch }, message) {
+        socket_chatMessage({ commit }, message) {
         //   dispatch('newMessage', message);
           commit('NEW_MESSAGE_RECEIVED', message);
         //   if (message.is_important) {

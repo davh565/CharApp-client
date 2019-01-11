@@ -87,14 +87,29 @@ export default {
       valid: true,
       name: '',
       nameRules:  [v => !!v || 'Name is required'],
-      ruleset: '',
+      ruleset: 'Pathfinder',
       rulesetRules: [ v => !!v || 'Ruleset is required'],
       campaign: '',
     }),
+sockets: {
+    connect() {
+      // this.$socket.io('/characters')
+      console.log(this.$socket.id +' connected',this.$socket)
+    },
+    customEmit(val) {
+      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+    }
+  },
 
 methods: {
-      validate () {
+  clickButton() {
+    // this.$socket is `socket.io-client` instance
+  },
+  validate () {
+    console.log(this.name)
         if (this.$refs.form.validate()) {
+        this.$socket.emit('chat message',{
+                                          name: this.name});
           // this.snackbar = true
         }
       },
