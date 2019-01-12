@@ -12,7 +12,11 @@ Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 Vue.use(Vuetify)
-Vue.use(VueSocketio, io('http://localhost:3000/'), { store })
+Vue.use(
+  VueSocketio, 
+  io(':3000/'), 
+  { store }
+)
 
 const router = new VueRouter({
   routes: Routes,

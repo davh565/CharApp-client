@@ -16,14 +16,15 @@ export const store = new Vuex.Store({
         SOCKET_CONNECT(state, status) {
           state.isConnected = true;
         },
-        NEW_MESSAGE_RECEIVED(state, message) {
-          state.message = message;
+        ADDED_CHAR(state, id) {
+          state.message = id;
         },
       },
       actions: {
-        socket_chatMessage({ commit }, message) {
+        socket_addedChar({ commit }, id) {
+          console.log(id)
         //   dispatch('newMessage', message);
-          commit('NEW_MESSAGE_RECEIVED', message);
+          commit('ADDED_CHAR', id);
         //   if (message.is_important) {
         //     dispatch('alertImportantMessage', message);
         //   }

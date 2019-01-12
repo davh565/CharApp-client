@@ -31,7 +31,7 @@
         </v-combobox>
         <v-btn to="/characters">Back</v-btn>
         <v-btn :disabled="!valid"
-       @click="validate">OK</v-btn>
+        @click="validate">OK</v-btn>
       </v-form>
 
     </v-container>
@@ -93,7 +93,6 @@ export default {
     }),
 sockets: {
     connect() {
-      // this.$socket.io('/characters')
       console.log(this.$socket.id +' connected',this.$socket)
     },
     customEmit(val) {
@@ -106,10 +105,12 @@ methods: {
     // this.$socket is `socket.io-client` instance
   },
   validate () {
-    console.log(this.name)
+    // console.log(this.$socket)
         if (this.$refs.form.validate()) {
-        this.$socket.emit('chat message',{
-                                          name: this.name});
+        this.$socket.emit('addCharacter',{
+        name: this.name,
+        ruleset: this.ruleset,
+        campaign: this.campaign});
           // this.snackbar = true
         }
       },
