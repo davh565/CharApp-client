@@ -4,6 +4,7 @@
     <br>
     <v-container>
       <v-btn @click="clickButton">click</v-btn>
+      <v-treeview :items="keyNames"></v-treeview>
     <p>{{character}}</p>
 
     </v-container>
@@ -35,27 +36,32 @@ export default {
 
   computed:{
     //Clean this up later
-    // keyNames: function(){
-    //   this.tree = []
-    //   let treeMake = function(val,arr){
-    //   for (let key in val){
-    //     let obj = {}
-    //     obj.name = key
-    //     obj.type = val[key]
-    //     obj.value = ''
-    //     if(typeof val[key] === 'object'){
-    //       obj.children=[]
-    //       treeMake(val[key],obj.children)
-    //     }
-    //     arr.push(obj)
-    //   }}
-    //   new treeMake(this.characteristics,this.tree)
-    //   //  console.log('tree',this.tree)
-    //  return this.tree
-    // },
+    keyNames: function(){
+      this.tree = []
+      let treeMake = function(val,arr){
+      for (let key in val){
+        let obj = {}
+        obj.name = key
+        obj.type = val[key]
+        obj.value = ''
+        if(typeof val[key] === 'object'){
+          obj.children=[]
+          treeMake(val[key],obj.children)
+        }
+        arr.push(obj)
+      }}
+      new treeMake(this.characteristics,this.tree)
+      //  console.log('tree',this.tree)
+     return this.tree
+    },
     character: function(){
       return this.$store.state.characters.find(x => x._id === this.$route.params.id)
     }
+  },
+  watch: {
+    character: function(){
+    }
+
   },
   data: () => ({
       tree: [],
