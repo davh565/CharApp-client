@@ -3,9 +3,9 @@
     <h1>Characters</h1>
     <br>
     <v-btn large to="/characters/add">New Character</v-btn><br><br>
-    <li v-for="character in characters" :key=character>
-      <v-btn to="{ path: '/characters/:character'}">
-        {{character}}
+    <li v-for="character in characters" :key=character._id>
+      <v-btn :to="'/characters/'+character._id">
+        {{character.characterName}}
       </v-btn>
     </li><br>
   </div>
@@ -17,10 +17,13 @@ export default {
   props: {
     msg: String
   },
+  created: function () {
+    this.$socket.emit('reqCharacters',{})
+  },
   computed: {
     characters: function(){
       return this.$store.state.characters
-    }
+    },
   }
 }
 </script>

@@ -7,11 +7,13 @@ import VueSocketio from 'vue-socket.io-extended'
 import io from 'socket.io-client';
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import AsyncComputed from 'vue-async-computed'
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 Vue.use(Vuetify)
+Vue.use(AsyncComputed)
 Vue.use(
   VueSocketio, 
   io(':3000/'), 

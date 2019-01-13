@@ -1,38 +1,10 @@
 <template>
   <div class="hello">
-    <h1>Add Character</h1>
+    <h1>Edit Character</h1>
     <br>
     <v-container>
-      <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation>
-      
-        <v-text-field
-        v-model="name"
-        :rules="nameRules"
-        required
-        label="Name">
-        </v-text-field>
-
-        <v-combobox
-        :rules="rulesetRules"
-        v-model="ruleset"
-        required
-        label="Ruleset"
-        :items="rulesets"
-        placeholder="Pathfinder">
-        </v-combobox>
-
-        <v-combobox
-        v-model="campaign"
-        label="Campaign"
-        :items="campaigns">
-        </v-combobox>
-        <v-btn to="/characters">Back</v-btn>
-        <v-btn :disabled="!valid"
-       @click="validate">OK</v-btn>
-      </v-form>
+      <v-btn @click="clickButton">click</v-btn>
+    <p>{{character}}</p>
 
     </v-container>
     <!-- <v-treeview :items="keyNames" open-on-click>
@@ -50,9 +22,16 @@ export default {
   name: 'MenuAddCharacter',
 
   props: {
-    msg: String
+    id: String
   },
-  
+    created: function () {
+      // if(this.$store.state.characters.find(x => x._id !== this.$route.params.id)){
+        if(this.character===undefined){
+
+          this.$socket.emit('reqCharacters')
+        }
+      // }
+  },
 
   computed:{
     //Clean this up later
@@ -74,20 +53,10 @@ export default {
     //   //  console.log('tree',this.tree)
     //  return this.tree
     // },
-    id: function(){
-      // while(this.$store.state.newCharId === null){
-
-      // }
-      return this.$store.state.newCharId
-    },
-    rulesets: function(){
-      return this.$store.state.rulesets
-    },
-    campaigns: function(){
-      return this.$store.state.campaigns
+    character: function(){
+      return this.$store.state.characters.find(x => x._id === this.$route.params.id)
     }
   },
-
   data: () => ({
       tree: [],
       valid: true,
@@ -100,20 +69,16 @@ export default {
 sockets: {
     connect() {
       // console.log(this.$socket.id +' connected',this.$socket)
+      console.log(this.$route.params.id)
     },
     customEmit(val) {
       console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
     }
   },
-watch: {
-    // whenever question changes, this function will run
-    id: function (){
-      console.log(this.id)
-      this.$router.push('/characters/'+this.id)
-    },
-},
+
 methods: {
   clickButton() {
+    console.log(this.character)
     // this.$socket is `socket.io-client` instance
   },
   validate () {
@@ -131,8 +96,8 @@ methods: {
       },
       resetValidation () {
         this.$refs.form.resetValidation()
-      },
-  },
+      }
+  }
 }
 </script>
 
