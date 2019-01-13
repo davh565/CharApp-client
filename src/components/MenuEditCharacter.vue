@@ -4,8 +4,19 @@
     <br>
     <v-container>
       <v-btn @click="clickButton">click</v-btn>
-      <v-treeview :items="keyNames"></v-treeview>
-    <p>{{character}}</p>
+      <v-treeview
+      :items="keyNames"
+      open-on-click>
+        <template
+        slot="label"
+        slot-scope="{ item, open, leaf }">
+          <p>{{item.name}}: 
+          <input
+          v-if="leaf"
+          v-model="item.value"
+          :placeholder="item.type"></p>
+    </template></v-treeview>
+    <!-- <p>{{character}}</p> -->
 
     </v-container>
     <!-- <v-treeview :items="keyNames" open-on-click>
@@ -50,7 +61,7 @@ export default {
         }
         arr.push(obj)
       }}
-      new treeMake(this.characteristics,this.tree)
+      new treeMake(this.character,this.tree)
       //  console.log('tree',this.tree)
      return this.tree
     },

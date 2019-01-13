@@ -83,6 +83,9 @@ export default {
       return this.$store.state.characters
     },
   },
+  watch: {
+    characters: function(){}
+  },
   methods: {
     deleteChar: function(id){
       console.log(id, typeof(id))
