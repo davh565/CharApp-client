@@ -12,6 +12,7 @@
         slot-scope="{ item, open, leaf }">
           <p>{{item.name}}: 
           <input
+          v-on:blur="updateField(item)"
           v-if="leaf"
           v-model="item.value"
           :placeholder="item.type"></p>
@@ -62,7 +63,7 @@ export default {
         arr.push(obj)
       }}
       new treeMake(this.character,this.tree)
-      //  console.log('tree',this.tree)
+        // console.log(this.tree)
      return this.tree
     },
     character: function(){
@@ -83,37 +84,49 @@ export default {
       rulesetRules: [ v => !!v || 'Ruleset is required'],
       campaign: '',
     }),
-sockets: {
-    connect() {
-      // console.log(this.$socket.id +' connected',this.$socket)
-      console.log(this.$route.params.id)
-    },
-    customEmit(val) {
-      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-    }
-  },
-
-methods: {
-  clickButton() {
-    console.log(this.character)
-    // this.$socket is `socket.io-client` instance
-  },
-  validate () {
-    // console.log(this.$socket)
-        if (this.$refs.form.validate()) {
-        this.$socket.emit('addCharacter',{
-        name: this.name,
-        ruleset: this.ruleset,
-        campaign: this.campaign});
-          // this.snackbar = true
-        }
+  sockets: {
+      connect() {
+        // console.log(this.$socket.id +' connected',this.$socket)
+        // console.log(this.$route.params.id)
       },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
+      customEmit(val) {
+        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
       }
+    },
+
+  methods: {
+    clickButton() {
+      console.log(this.character)
+      // this.$socket is `socket.io-client` instance
+    },
+    validate () {
+      // console.log(this.$socket)
+      if (this.$refs.form.validate()) {
+        this.$socket.emit('addCharacter',{
+          name: this.name,
+          ruleset: this.ruleset,
+          campaign: this.campaign
+        });
+      }
+    },
+    reset () {
+      this.$refs.form.reset()
+    },
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    },
+    updateField(input){
+      console.log({
+          input
+        })
+
+      this.$socket.emit('editCharacter',{
+        id: this.character._id,
+        obj: {
+          [input.name] : input.value
+        }
+      })
+    }
   }
 }
 </script>

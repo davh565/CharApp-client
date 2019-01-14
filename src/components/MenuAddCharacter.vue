@@ -25,10 +25,12 @@
         </v-combobox>
 
         <v-combobox
+        :rules="campaignRules"
         v-model="campaign"
         label="Campaign"
         :items="campaigns">
         </v-combobox>
+
         <v-btn to="/characters">Back</v-btn>
         <v-btn :disabled="!valid"
        @click="validate">OK</v-btn>
@@ -96,6 +98,7 @@ export default {
       ruleset: 'Pathfinder',
       rulesetRules: [ v => !!v || 'Ruleset is required'],
       campaign: '',
+      campaignRules: [ v => !!v || 'Camaign is required'],
     }),
 sockets: {
     connect() {
@@ -123,6 +126,7 @@ methods: {
         name: this.name,
         ruleset: this.ruleset,
         campaign: this.campaign});
+        console.log(this.campaign)
           // this.snackbar = true
         }
       },
