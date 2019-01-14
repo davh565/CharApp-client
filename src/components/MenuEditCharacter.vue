@@ -1,9 +1,9 @@
 <template>
   <div class="hello">
-    <h1>Edit Character</h1>
+    <h1>Edit {{character?character.characterName:'Character'}}</h1>
     <br>
     <v-container>
-      <v-btn @click="clickButton">click</v-btn>
+      <!-- <v-btn @click="clickButton">click</v-btn> -->
       <v-treeview
       :items="keyNames"
       open-on-click>
@@ -14,8 +14,8 @@
           <input
           v-on:blur="updateField(item)"
           v-if="leaf"
-          v-model="item.value"
-          :placeholder="item.type"></p>
+          v-model="item.model"
+          :placeholder="item.value"></p>
     </template></v-treeview>
     <!-- <p>{{character}}</p> -->
 
@@ -49,22 +49,26 @@ export default {
   computed:{
     //Clean this up later
     keyNames: function(){
-      this.tree = []
-      let treeMake = function(val,arr){
-      for (let key in val){
-        let obj = {}
-        obj.name = key
-        obj.type = val[key]
-        obj.value = ''
-        if(typeof val[key] === 'object'){
-          obj.children=[]
-          treeMake(val[key],obj.children)
+      if(this.character){
+        const entries = Object.entries(this.character)
+        const treeMaker = function(acc,cur,idx){
+          acc[idx] = {
+            id: idx+1,
+            name: cur[0],
+            model: ''}
+            if(typeof cur[1] === 'object'){
+              const childEntries = Object.entries(cur[1])
+              acc[idx].children = childEntries.reduce(treeMaker,[])
+            }
+            else acc[idx].value = cur[1]
+          return acc
         }
-        arr.push(obj)
-      }}
-      new treeMake(this.character,this.tree)
-        // console.log(this.tree)
-     return this.tree
+
+        const tree = entries.reduce(treeMaker,[])
+        console.log(tree)
+        return tree
+      }
+      else return []
     },
     character: function(){
       return this.$store.state.characters.find(x => x._id === this.$route.params.id)
@@ -89,16 +93,35 @@ export default {
         // console.log(this.$socket.id +' connected',this.$socket)
         // console.log(this.$route.params.id)
       },
-      customEmit(val) {
-        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-      }
+      // customEmit(val) {
+      //   console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+      // }
     },
 
   methods: {
-    clickButton() {
-      console.log(this.character)
-      // this.$socket is `socket.io-client` instance
-    },
+    // clickButton() {
+    //   const keys = Object.keys(this.character) 
+    //   const values = Object.values(this.character)
+    //   const entries = Object.entries(this.character)
+    //   const treeMaker = function(acc,cur,idx){
+    //     acc[idx] = {
+    //       id: idx+1,
+    //       name: cur[0],
+    //       model: ''}
+    //       if(typeof cur[1] === 'object'){
+    //         const childEntries = Object.entries(cur[1])
+    //         acc[idx].children = childEntries.reduce(treeMaker,[])
+    //       }
+    //       else acc[idx].value = cur[1]
+    //     return acc
+    //   }
+
+    //   const tree = entries.reduce(treeMaker,[])
+    //   console.log(tree)
+    //   return tree
+    //   // console.log(Object.values(this.character))
+    //   // this.$socket is `socket.io-client` instance
+    // },
     validate () {
       // console.log(this.$socket)
       if (this.$refs.form.validate()) {
