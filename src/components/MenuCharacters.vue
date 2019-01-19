@@ -1,5 +1,6 @@
 <template>
   <v-container
+  v-if="characters"
   fluid
   grid-list-md
   text-xs-center>
@@ -40,10 +41,10 @@
         class="justify-center" primary-title>
           <div>
             <h3 class="headline mb-0">
-              {{character.characterName}}
+              {{character.data.characterName}}
             </h3>
-            <div>{{character.ruleset}}<br>
-            {{character.campaign}}</div>
+            <div>{{character.data.ruleset}}<br>
+            {{character.data.campaign}}</div>
           </div>
         </v-card-title>
 

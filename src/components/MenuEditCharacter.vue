@@ -1,8 +1,9 @@
 <template>
   <div class="hello">
-    <h1>Edit {{character?character.characterName:'Character'}}</h1>
+    <h1>Edit {{character?character.data.characterName:'Character'}}</h1>
     <br>
-    <v-container>
+    <v-container
+    v-if="character">
       <!-- <v-btn @click="clickButton">click</v-btn> -->
       <v-treeview
       :items="keyNames"
@@ -50,13 +51,18 @@ export default {
     //Clean this up later
     keyNames: function(){
       if(this.character){
-        const entries = Object.entries(this.character)
+        const entries = Object.entries(this.character.data)
+        let index = 0
+          let parentEntry = null
         const treeMaker = function(acc,cur,idx){
+          index++
           acc[idx] = {
-            id: idx+1,
+            id: index,
             name: cur[0],
             model: ''}
+            if(parentEntry) acc[idx].parent = parentEntry
             if(typeof cur[1] === 'object'){
+              parentEntry = cur[0]
               const childEntries = Object.entries(cur[1])
               acc[idx].children = childEntries.reduce(treeMaker,[])
             }
@@ -142,13 +148,25 @@ export default {
       console.log({
           input
         })
+       if(input.model) {if(input.parent){
+          this.$socket.emit('editCharacter',{
+            id: this.character._id,
+            obj: {[input.parent] : {
+              [input.name] : input.model
+            }}
+          })
 
-      this.$socket.emit('editCharacter',{
-        id: this.character._id,
-        obj: {
-          [input.name] : input.value
         }
-      })
+        else{
+          this.$socket.emit('editCharacter',{
+            id: this.character._id,
+            obj: {
+              [input.name] : input.model
+            }
+          })
+
+        }}
+
     }
   }
 }
