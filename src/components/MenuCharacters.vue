@@ -41,10 +41,10 @@
         class="justify-center" primary-title>
           <div>
             <h3 class="headline mb-0">
-              {{character.data.characterName}}
+              {{character.data.playerName}}
             </h3>
-            <div>{{character.data.ruleset}}<br>
-            {{character.data.campaign}}</div>
+            <div>{{character.data._ruleset}}<br>
+            {{character.data._campaign}}</div>
           </div>
         </v-card-title>
 
@@ -81,6 +81,7 @@ export default {
   },
   computed: {
     characters: function(){
+      // console.log(this.$store.state.characters[0].data)
       return this.$store.state.characters
     },
   },

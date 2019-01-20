@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>Edit {{character?character.data.characterName:'Character'}}</h1>
+    <h1>Edit {{character?character.data.playerName:'Character'}}</h1>
     <br>
     <v-container
     v-if="character">
@@ -54,7 +54,8 @@ export default {
         const entries = Object.entries(this.character.data)
         let index = 0
           let parentEntry = null
-        const treeMaker = function(acc,cur,idx){
+        const treeMaker = function(acc,cur,idx,src){
+          // console.log(idx,src.length)
           index++
           acc[idx] = {
             id: index,
@@ -64,14 +65,18 @@ export default {
             if(typeof cur[1] === 'object'){
               parentEntry = cur[0]
               const childEntries = Object.entries(cur[1])
+              // console.log(childEntries)
               acc[idx].children = childEntries.reduce(treeMaker,[])
             }
-            else acc[idx].value = cur[1]
+            else {
+              acc[idx].value = cur[1]
+              }
+              if (idx === src.length-1) parentEntry = null
           return acc
         }
 
         const tree = entries.reduce(treeMaker,[])
-        console.log(tree)
+        // console.log(tree)
         return tree
       }
       else return []
@@ -105,45 +110,7 @@ export default {
     },
 
   methods: {
-    // clickButton() {
-    //   const keys = Object.keys(this.character) 
-    //   const values = Object.values(this.character)
-    //   const entries = Object.entries(this.character)
-    //   const treeMaker = function(acc,cur,idx){
-    //     acc[idx] = {
-    //       id: idx+1,
-    //       name: cur[0],
-    //       model: ''}
-    //       if(typeof cur[1] === 'object'){
-    //         const childEntries = Object.entries(cur[1])
-    //         acc[idx].children = childEntries.reduce(treeMaker,[])
-    //       }
-    //       else acc[idx].value = cur[1]
-    //     return acc
-    //   }
 
-    //   const tree = entries.reduce(treeMaker,[])
-    //   console.log(tree)
-    //   return tree
-    //   // console.log(Object.values(this.character))
-    //   // this.$socket is `socket.io-client` instance
-    // },
-    validate () {
-      // console.log(this.$socket)
-      if (this.$refs.form.validate()) {
-        this.$socket.emit('addCharacter',{
-          name: this.name,
-          ruleset: this.ruleset,
-          campaign: this.campaign
-        });
-      }
-    },
-    reset () {
-      this.$refs.form.reset()
-    },
-    resetValidation () {
-      this.$refs.form.resetValidation()
-    },
     updateField(input){
       console.log({
           input
@@ -158,6 +125,7 @@ export default {
 
         }
         else{
+          // console.log(input.name)
           this.$socket.emit('editCharacter',{
             id: this.character._id,
             obj: {
@@ -187,5 +155,11 @@ li {
 }
 a {
   color: #42b983;
+}
+::-webkit-input-placeholder{
+  color:black;
+}
+input {
+  color: rgb(200, 0, 0);
 }
 </style>
