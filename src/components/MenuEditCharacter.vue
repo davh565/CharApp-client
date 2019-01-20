@@ -7,7 +7,9 @@
       <!-- <v-btn @click="clickButton">click</v-btn> -->
       <v-treeview
       :items="keyNames"
-      open-on-click>
+      open-on-click
+
+      transition>
         <template
         slot="label"
         slot-scope="{ item, open, leaf }">
@@ -46,7 +48,9 @@ export default {
         }
       // }
   },
-
+  updated: function() {
+    console.log(this.character.data)
+  },
   computed:{
     //Clean this up later
     keyNames: function(){
@@ -98,6 +102,7 @@ export default {
       ruleset: 'Pathfinder',
       rulesetRules: [ v => !!v || 'Ruleset is required'],
       campaign: '',
+      open: []
     }),
   sockets: {
       connect() {
@@ -112,9 +117,9 @@ export default {
   methods: {
 
     updateField(input){
-      console.log({
-          input
-        })
+      // console.log({
+      //     input
+      //   })
        if(input.model) {if(input.parent){
           this.$socket.emit('editCharacter',{
             id: this.character._id,
