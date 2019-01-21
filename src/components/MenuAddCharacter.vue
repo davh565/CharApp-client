@@ -16,6 +16,7 @@
         </v-text-field>
 
         <v-combobox
+        disabled
         :rules="rulesetRules"
         v-model="ruleset"
         required
@@ -98,7 +99,7 @@ export default {
       ruleset: 'Pathfinder',
       rulesetRules: [ v => !!v || 'Ruleset is required'],
       campaign: '',
-      campaignRules: [ v => !!v || 'Camaign is required'],
+      campaignRules: [],
     }),
 sockets: {
     connect() {

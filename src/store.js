@@ -37,6 +37,9 @@ export const store = new Vuex.Store({
           // console.log(state.characters.find(x => x._id ===char.id))
           // state.characters = char;
         },
+        DEL_CHAR(state, char) {
+          state.characters = state.characters.filter(x => x._id !== char)
+        },
       },
       actions: {
         socket_addedChar({ commit }, id) {
@@ -48,6 +51,9 @@ export const store = new Vuex.Store({
         },
         socket_editChar({ commit }, char) {
           commit('EDIT_CHAR', char);
+        },
+        socket_delChar({ commit }, char) {
+          commit('DEL_CHAR', char);
         },
       },
     })

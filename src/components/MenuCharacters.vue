@@ -16,7 +16,14 @@
         large 
         color="blue"
         to="/characters/add">New Character</v-btn>
-        <br><br>
+        <!-- <br><br>
+        <p>{{characters}}</p>
+        <v-btn
+            flat
+            color="red"
+            @click="test()"
+            
+          >test </v-btn> -->
         </v-flex>
     <br>
     <!--<li v-for="character in characters" :key=character._id>
@@ -27,9 +34,10 @@
         xs12
         sm6
         md4
-        v-for="character in characters" 
-        :key=character._id>
+        >
     <v-card
+    v-for="(character, index) in characters" 
+        :key="character._id"
     
      >
         <!-- <v-img
@@ -56,12 +64,22 @@
         Select
       </v-btn>
           <v-btn
+          v-if="!deleteMark[index]"
             flat
             color="red"
-            @click="deleteChar(character._id)"
+            @click="deleteConfirm(index)"
             
           >
             Delete
+          </v-btn>
+          <v-btn
+          v-else
+            
+            color="red"
+            @click="deleteChar(character._id, index)"
+            
+          >
+            Delete?
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -76,6 +94,13 @@ export default {
   props: {
     msg: String
   },
+  data() {
+    return {
+      testVal: 0,
+      deleteMark : [],
+      deleting : []
+    }
+  },
   created: function () {
     this.$socket.emit('reqCharacters',{})
   },
@@ -86,11 +111,22 @@ export default {
     },
   },
   watch: {
-    characters: function(){}
+    characters: function(){},
+    // deleteMark: function(){}
+
   },
   methods: {
-    deleteChar: function(id){
+    test: function(){
+      this.testVal++
+    },
+    deleteConfirm: function(index){
+      // this.deleteMark[index] = true
+      this.$set(this.deleteMark, index, true)
+      console.log(this.deleteMark)
+    },
+    deleteChar: function(id, index){
       console.log(id, typeof(id))
+      this.$set(this.deleteMark, index, false)
       this.$socket.emit('delCharacter',id)
     }
   }
