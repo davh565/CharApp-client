@@ -10,9 +10,16 @@ export const store = new Vuex.Store({
         testData: 'hello',
         rulesets: ['Pathfinder','D&D 5E', "D&D 4E"],
         campaigns: [],
-        characters: []
+        characters: [],
+        currentPage: []
       },
       mutations: {
+        CURRENT_PAGE(state,path){
+          state.currentPage = path
+
+        },
+
+
         SOCKET_CONNECT(state, status) {
           state.isConnected = true;
         },

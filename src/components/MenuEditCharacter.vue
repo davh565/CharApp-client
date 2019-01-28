@@ -1,35 +1,71 @@
 <template>
-  <div class="hello">
-    <h1>Edit {{character?character.data.playerName:'Character'}}</h1>
-    <br>
+    
     <v-container
     v-if="character">
+      <v-layout row wrap justify-center>
+        <v-flex 
+        xs12
+        sm6>
+          
+        <v-card>
+          <v-card-title primary-title>
+            <h2>Edit {{character?character.data.playerName:'Character'}}</h2>
+          </v-card-title>
+          <v-card-text>
       <!-- <v-btn @click="clickButton">click</v-btn> -->
       <v-treeview
       :items="keyNames"
       open-on-click
+      hoverable
 
       transition>
+      <template
+        slot="prepend"
+        slot-scope="{ item, open, leaf }">
+        {{item.name}}: 
+      </template>
         <template
         slot="label"
         slot-scope="{ item, open, leaf }">
-          <p>{{item.name}}: 
+        <v-text-field
+        single-line
+        v-on:blur="updateField(item)"
+          v-if="leaf"
+          v-model="item.model"
+
+            :label="String(item.value)"
+          ></v-text-field>
+        <!-- <v-flex justify-space-between>
+          
+          {{item.name}}: 
           <input
           v-on:blur="updateField(item)"
           v-if="leaf"
           v-model="item.model"
-          :placeholder="item.value"></p>
-    </template></v-treeview>
-    <!-- <p>{{character}}</p> -->
-
-    </v-container>
-    <!-- <v-treeview :items="keyNames" open-on-click>
-      <template slot="label" slot-scope="{ item, open, leaf }">
-      <p>{{item.name}}: <input v-if="leaf" v-on:blur="updateField(item)" v-model="item.value" :placeholder="item.type"></p>
+          :placeholder="item.value">
+        </v-flex> -->
     </template>
-    </v-treeview> -->
+    
+    <template
+        slot="append"
+        slot-scope="{ item, open, leaf }">
+        <div v-if="leaf">
 
-  </div>
+        <v-btn flat icon color="white">
+              <v-icon>remove</v-icon>
+            </v-btn>
+        <v-btn flat icon color="white">
+              <v-icon>add</v-icon>
+            </v-btn>
+        </div>
+      </template>
+
+    </v-treeview>
+          </v-card-text>
+        </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -162,9 +198,10 @@ a {
   color: #42b983;
 }
 ::-webkit-input-placeholder{
-  color:black;
+  color:white;
 }
 input {
+  text-align: end;
   color: rgb(200, 0, 0);
 }
 </style>

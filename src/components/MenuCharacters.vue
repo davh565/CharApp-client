@@ -1,54 +1,35 @@
 <template>
   <v-container
-  v-if="characters"
-  fluid
-  grid-list-md
-  text-xs-center>
+  grid-list-sm
+  >
     <v-layout
-    row
-    wrap
-    justify-center
+  wrap
     >
       <v-flex
       xs12>
-        <h1>Characters</h1>
         <v-btn
         large 
         color="blue"
         to="/characters/add">New Character</v-btn>
-        <!-- <br><br>
-        <p>{{characters}}</p>
-        <v-btn
-            flat
-            color="red"
-            @click="test()"
-            
-          >test </v-btn> -->
+      
         </v-flex>
     <br>
-    <!--<li v-for="character in characters" :key=character._id>
-      
-    </li><br> -->
-    <v-flex
-      align-self-center
+      <v-flex
         xs12
         sm6
         md4
+        lg3
+        v-for="(character, index) in characters" 
+        :key="character._id"
         >
     <v-card
-    v-for="(character, index) in characters" 
-        :key="character._id"
     
-     >
-        <!-- <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-          aspect-ratio="2.75"
-        ></v-img> -->
-
+         >
+   
         <v-card-title 
         class="justify-center" primary-title>
           <div>
-            <h3 class="headline mb-0">
+            <h3 class="headline">
               {{character.data.playerName}}
             </h3>
             <div>{{character.data._ruleset}}<br>

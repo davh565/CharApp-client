@@ -1,8 +1,13 @@
 <template>
-  <div class="hello">
-    <h1>Add Character</h1>
-    <br>
     <v-container>
+      <v-layout row wrap justify-center>
+        <v-flex xs4>
+          
+        <v-card>
+          <v-card-title primary-title>
+            <h2>Add Character</h2>
+          </v-card-title>
+          <v-card-text>
       <v-form
       ref="form"
       v-model="valid"
@@ -36,6 +41,10 @@
         <v-btn :disabled="!valid"
        @click="validate">OK</v-btn>
       </v-form>
+          </v-card-text>
+        </v-card>
+        </v-flex>
+      </v-layout>
 
     </v-container>
     <!-- <v-treeview :items="keyNames" open-on-click>
@@ -44,7 +53,6 @@
     </template>
     </v-treeview> -->
 
-  </div>
 </template>
 
 <script>

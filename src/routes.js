@@ -4,8 +4,20 @@ import MenuAddCharacter from './components/MenuAddCharacter.vue'
 import MenuEditCharacter from './components/MenuEditCharacter.vue'
 
 export default [
-    {path: '/', component: MenuMain},
-    {path: '/Characters/', component: MenuCharacters},
-    {path: '/Characters/add', component: MenuAddCharacter},
-    {path: '/Characters/:id', component: MenuEditCharacter},
+    {
+        path: '/',
+        component: MenuMain,
+        name: 'Main Menu'},
+    {
+        path: '/Characters/', 
+        component: MenuCharacters,
+        name: 'Characters Menu'},
+    {
+        path: '/Characters/add', 
+        component: MenuAddCharacter,
+        name: 'Add Character Menu'},
+    {
+        path: '/Characters/:id', 
+        component: MenuEditCharacter,
+        name: 'Character'},
 ]
